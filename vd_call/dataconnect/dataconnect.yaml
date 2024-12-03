@@ -1,0 +1,12 @@
+specVersion: "v1beta"
+serviceId: "vd_call"
+location: "us-central1"
+schema:
+  source: "./schema"
+  datasource:
+    postgresql:
+      database: "fdcdb"
+      cloudSql:
+        instanceId: "vd_call-fdc"
+      # schemaValidation: "COMPATIBLE"
+connectorDirs: ["./connector"]

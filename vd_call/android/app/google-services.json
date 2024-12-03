@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "19868013127",
+    "project_id": "vdcall-bad5b",
+    "storage_bucket": "vdcall-bad5b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:19868013127:android:e5f3f3060256e4636cd762",
+        "android_client_info": {
+          "package_name": "com.example.vd_call"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCroJqLOiVLNOk2W9Lbw5Nezed4S1AUUv4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
