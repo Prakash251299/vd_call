@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:vd_call/controller/roomIdStore/get_room_id.dart';
+import 'package:vd_call/controller/roomIdStore/save_room_id.dart';
 import 'package:vd_call/firebase_options.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:vd_call/signaling.dart';
@@ -96,6 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: () async {
                   roomId = await signaling.createRoom(_remoteRenderer);
                   textEditingController.text = roomId!;
+                  await saveRoomId(roomId);
                   setState(() {});
                 },
                 child: Text("Create room"),
@@ -104,10 +107,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 width: 8,
               ),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async{
                   // Add roomId
+                  String roomId = await getRoomId();
                   signaling.joinRoom(
-                    textEditingController.text.trim(),
+                    // textEditingController.text.trim(),
+                    roomId,
                     _remoteRenderer,
                   );
                 },
@@ -138,21 +143,21 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Join the following Room: "),
-                Flexible(
-                  child: TextFormField(
-                    controller: textEditingController,
-                  ),
-                )
-              ],
-            ),
-          ),
-          SizedBox(height: 8)
+          // Padding(
+          //   padding: const EdgeInsets.all(8.0),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.center,
+          //     children: [
+          //       Text("Join the following Room: "),
+          //       Flexible(
+          //         child: TextFormField(
+          //           controller: textEditingController,
+          //         ),
+          //       )
+          //     ],
+          //   ),
+          // ),
+          // SizedBox(height: 8)
         ],
       ),
     );
