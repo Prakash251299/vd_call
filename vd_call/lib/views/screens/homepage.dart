@@ -3,6 +3,7 @@ import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:vd_call/controller/roomIdStore/get_room_id.dart';
 import 'package:vd_call/controller/roomIdStore/save_room_id.dart';
 import 'package:vd_call/signaling.dart';
+import 'package:vd_call/views/screens/room.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key}) : super(key: key);
@@ -41,95 +42,112 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black12,
       appBar: AppBar(
-        title: Text("Video caller"),
+        backgroundColor: Colors.black12,
+        title: Text("Video caller",style: TextStyle(color: Colors.white),),
       ),
-      body: Column(
-        children: [
-          SizedBox(height: 8),
-          SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: 
-              // ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              
-              ElevatedButton(
-                onPressed: ()async {
-                  await signaling.openUserMedia(_localRenderer, _remoteRenderer);
-                  setState(() {});
-                },
-                child: Text("Open camera & microphone"),
+      body: Center(
+        child: Column(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          // crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(height: 8),
+            // SingleChildScrollView(
+            //       scrollDirection: Axis.vertical,
+            //       child: 
+                // ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                
+                ElevatedButton(
+                  onPressed: ()async {
+                    await signaling.openUserMedia(_localRenderer, _remoteRenderer);
+                    setState(() {});
+                  },
+                  child: Text("Open camera & microphone"),
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    roomId = await signaling.createRoom(_remoteRenderer);
+                    textEditingController.text = roomId!;
+                    await saveRoomId(roomId);
+                    setState(() {});
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Room(_localRenderer,_remoteRenderer)));
+                  },
+                  child: Text("Create room"),
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                ElevatedButton(
+                  onPressed: () async{
+                    // Add roomId
+                    // String s = textEditingController.text.trim();
+                    String roomId = await getRoomId("prakashpratapsingh6@gmail.com");
+                    signaling.joinRoom(
+                      roomId,
+                      _remoteRenderer,
+                    );
+                  },
+                  child: Text("Join room"),
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                GestureDetector(
+                  
+                  onTap: () {
+                    signaling.hangUp(_localRenderer);
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(7),
+                    width: 120,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      borderRadius:BorderRadius.all(Radius.circular(20)), 
+                      color: Colors.white
+                      
+                    ),
+                    child: Center(child:Text("Hang up",style: TextStyle(fontSize: 16),))),
+                )
+              ],
+            ),
+            // ),
+            SizedBox(height: 8),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(child: RTCVideoView(_localRenderer, mirror: true)),
+                    Expanded(child: RTCVideoView(_remoteRenderer)),
+                  ],
+                ),
               ),
-              SizedBox(
-                width: 8,
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  roomId = await signaling.createRoom(_remoteRenderer);
-                  textEditingController.text = roomId!;
-                  await saveRoomId(roomId);
-                  setState(() {});
-                },
-                child: Text("Create room"),
-              ),
-              SizedBox(
-                width: 8,
-              ),
-              ElevatedButton(
-                onPressed: () async{
-                  // Add roomId
-                  String roomId = await getRoomId("prakashpratapsingh6@gmail.com");
-                  signaling.joinRoom(
-                    // textEditingController.text.trim(),
-                    roomId,
-                    _remoteRenderer,
-                  );
-                },
-                child: Text("Join room"),
-              ),
-              SizedBox(
-                width: 8,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  signaling.hangUp(_localRenderer);
-                },
-                child: Text("Hangup"),
-              )
-            ],
-          ),
-          ),
-          SizedBox(height: 8),
-          Expanded(
-            child: Padding(
+            ),
+            Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Column(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(child: RTCVideoView(_localRenderer, mirror: true)),
-                  Expanded(child: RTCVideoView(_remoteRenderer)),
+                  Text("Join the following Room: ",style: TextStyle(color: Colors.white),),
+                  Flexible(
+                    child: TextFormField(
+                      controller: textEditingController,
+                    ),
+                  )
                 ],
               ),
             ),
-          ),
-          // Padding(
-          //   padding: const EdgeInsets.all(8.0),
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: [
-          //       Text("Join the following Room: "),
-          //       Flexible(
-          //         child: TextFormField(
-          //           controller: textEditingController,
-          //         ),
-          //       )
-          //     ],
-          //   ),
-          // ),
-          // SizedBox(height: 8)
-        ],
+            SizedBox(height: 8)
+          ],
+        ),
       ),
     );
   }
