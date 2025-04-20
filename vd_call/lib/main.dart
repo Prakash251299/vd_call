@@ -46,6 +46,7 @@ class MyApp extends StatelessWidget {
               // data loaded:
               
               final status = snapshot.data;
+              print("LoginStatus: $status");
               // status=1 means user is installed the app already and data is fetched
               // status=0 mwans either user is new or has unintalled the app
               return status==1?MyHomePage():LoginScreen();

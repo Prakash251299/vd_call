@@ -42,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Welcome to Flutter Explained - WebRTC"),
+        title: Text("Video caller"),
       ),
       body: Column(
         children: [
@@ -80,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ElevatedButton(
                 onPressed: () async{
                   // Add roomId
-                  String roomId = await getRoomId();
+                  String roomId = await getRoomId("prakashpratapsingh6@gmail.com");
                   signaling.joinRoom(
                     // textEditingController.text.trim(),
                     roomId,

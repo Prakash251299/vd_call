@@ -8,7 +8,7 @@ import 'package:vd_call/views/screens/homepage.dart';
 class LoginPage{ 
   Future<int> getLoginStatus()async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    int? isLoggedIn = await prefs.getInt("isLoggedInd");
+    int? isLoggedIn = await prefs.getInt("isLoggedIn");
     if(isLoggedIn==null){
       return 0;
     }
@@ -67,21 +67,10 @@ class LoginPage{
         UserCredential? user;
         user = await signInWithGoogle();
         final SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setInt('isLoggedIn', 1);
         await prefs.setString('username', '${user.user?.displayName}');
         await prefs.setString('imgUrl', '${user.user?.photoURL}');
         await prefs.setString('email', '${user.user?.email}');
-        // String isLoggedIn = await prefs.setString();
-        // await _readWrite.writeEmail((user.user?.email).toString());
-        // store date too in local storage here
-        // DateTime now = DateTime.now();
-        // String date = '${now.day}/${now.month}/${now.year}';
-        // await _readWrite.writeDate(date);
-        // await requestNotificationPermission();
-        // if(await userExists(user.user?.email)==0){
-        //   Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const PickArtistPage()));
-        //   return;
-
-        // }
       }
       Navigator.pushAndRemoveUntil(
         context,
